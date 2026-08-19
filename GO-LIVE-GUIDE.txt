@@ -1,0 +1,85 @@
+GO-LIVE GUIDE — AARTI FASHION PALACE WEBSITE
+================================================
+Domain + Hosting + Photo Admin Panel, start to finish.
+Total time: about 45–60 minutes. Total cost: roughly ₹700–1,500/year
+(domain only — hosting is free at this scale).
+
+
+STEP 1 — BUY THE DOMAIN
+---------------------------
+1. Decide the name, e.g. aartifashionpalace.com or aartifashionpalace.in
+   (.in is cheaper and fine for a local Ahmedabad business).
+2. Buy it from a registrar with honest renewal pricing — Namecheap or
+   Cloudflare Registrar are the most straightforward (avoid GoDaddy's
+   cheap-first-year-then-expensive-renewal pattern).
+3. That's it for now — you don't need to touch DNS settings yet, that
+   happens in Step 4.
+
+
+STEP 2 — PUT THE SITE ON GITHUB
+-----------------------------------
+1. Go to github.com → create a free account.
+2. Click "New repository" → name it aarti-fashion-palace-website →
+   keep it Public → don't add a README → "Create repository".
+3. On the repo page, click "uploading an existing file".
+4. Drag in EVERYTHING from the unzipped website folder: all .html files,
+   styles.css, script.js, cms-loader.js, and the images, content, and
+   admin folders. Commit the changes.
+
+
+STEP 3 — CONNECT NETLIFY (this is your host)
+------------------------------------------------
+1. Go to app.netlify.com → sign up (free) → "Add new site" →
+   "Import an existing project" → "Deploy with GitHub".
+2. Authorize Netlify, then select the aarti-fashion-palace-website repo.
+3. Leave build settings empty (plain HTML site, no build step) →
+   "Deploy". You'll get a temporary URL like random-name.netlify.app —
+   ignore it, your real domain replaces this next.
+
+
+STEP 4 — CONNECT YOUR REAL DOMAIN
+--------------------------------------
+1. In your Netlify site → "Domain management" → "Add a domain" →
+   type in the domain you bought in Step 1.
+2. Netlify shows you DNS records to add (usually one A record and one
+   CNAME, or Netlify DNS nameservers — it explains exactly what to do).
+3. Go to your domain registrar's dashboard (Namecheap/Cloudflare/etc.),
+   find "DNS settings" or "Nameservers", and enter what Netlify gave you.
+4. Wait a few hours (sometimes up to 24) for it to activate. Netlify
+   automatically issues a free SSL certificate once it detects the
+   domain is pointed correctly — your site becomes https:// automatically.
+
+
+STEP 5 — TURN ON THE PHOTO ADMIN PANEL
+-------------------------------------------
+1. Netlify site → Site configuration → Identity → "Enable Identity".
+2. Registration → set to "Invite only".
+3. Services → Git Gateway → "Enable Git Gateway".
+4. "Identity" tab → "Invite users" → enter the client's email. They'll
+   get an email to set a password.
+5. In the GitHub repo, edit two files (click file → pencil icon):
+   - admin/config.yml → change site_url to your real domain
+   - cms-loader.js → change GITHUB_REPO to "yourusername/aarti-fashion-palace-website"
+   Commit both. Netlify redeploys automatically within a minute.
+
+
+STEP 6 — VERIFY EVERYTHING WORKS
+-------------------------------------
+Check each of these on your real domain before calling it done:
+[ ] All 5 pages load (Home, Collections, About, Gallery, Contact)
+[ ] Logo appears correctly on every page
+[ ] WhatsApp floating button opens a chat
+[ ] "Get Directions" opens the correct Google Maps location
+[ ] Phone number is tappable on mobile
+[ ] yourdomain.com/admin loads a login screen
+[ ] Client can log in and see all 7 photo categories with existing
+    photos already listed
+[ ] Uploading a test photo actually appears on the live site within
+    a couple of minutes
+
+
+THAT'S IT
+------------
+Once Step 6 is all checked, the site is genuinely live — real domain,
+real hosting, real self-service photo management for the client, at
+essentially zero ongoing cost beyond the domain renewal.
