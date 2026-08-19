@@ -3,26 +3,294 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aarti Fashion Palace — Photo Manager</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <title>Staff Login | Aarti Fashion Palace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body{ font-family:'Manrope',sans-serif; }
-    #nc-root{ min-height:100vh; }
+    :root{
+      --bg:#150a18; --wine:#5c1332; --plum:#3a1a52; --gold:#e8c874; --gold-dk:#c9a24b;
+      --ivory:#f5efe6; --muted:#c9bdd6;
+    }
+    *{box-sizing:border-box; margin:0; padding:0;}
+    html, body{ min-height:100%; }
+    body{
+      font-family:'Manrope', sans-serif;
+      color:var(--ivory);
+      background:
+        radial-gradient(ellipse 900px 700px at 15% 0%, rgba(92,19,50,.55), transparent 60%),
+        radial-gradient(ellipse 800px 800px at 100% 20%, rgba(58,26,82,.6), transparent 55%),
+        radial-gradient(ellipse 700px 600px at 30% 100%, rgba(201,162,75,.15), transparent 60%),
+        var(--bg);
+      min-height:100vh;
+      padding:24px;
+    }
+    h1,h2{ font-family:'Bodoni Moda',serif; font-weight:600; }
+    .glass{ background:rgba(255,255,255,.05); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,.12); border-radius:22px; }
+    .eyebrow{ font-size:.68rem; letter-spacing:.24em; text-transform:uppercase; font-weight:700; color:var(--gold); }
+
+    /* ---- login gate ---- */
+    #gate{ min-height:100vh; display:flex; align-items:center; justify-content:center; }
+    .card{ width:100%; max-width:420px; padding:48px 40px; text-align:center; }
+    .logo-badge{ position:relative; width:96px; height:96px; margin:0 auto 24px; border-radius:50%; }
+    .logo-badge::before{ content:""; position:absolute; inset:-10px; border-radius:50%; background:radial-gradient(circle, rgba(232,200,116,.4), transparent 70%); filter:blur(8px); }
+    .logo-badge img{ position:relative; width:96px; height:96px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 3px rgba(232,200,116,.7), 0 12px 32px rgba(0,0,0,.4); }
+    .card h1{ font-size:1.5rem; margin:10px 0 14px; }
+    .card p{ color:var(--muted); font-size:.92rem; line-height:1.7; margin-bottom:28px; }
+    .field{ margin-bottom:18px; text-align:left; }
+    .field label{ display:block; font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .field input{ width:100%; padding:13px 16px; border-radius:12px; border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.06); color:var(--ivory); font-family:'Manrope',sans-serif; font-size:.95rem; outline:none; }
+    .field input:focus{ border-color:var(--gold); }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:15px 28px; background:linear-gradient(135deg,var(--gold),var(--gold-dk)); color:#2a1a12; font-weight:700; font-size:.9rem; border:none; border-radius:999px; cursor:pointer; font-family:'Manrope',sans-serif; transition:transform .25s ease, box-shadow .25s ease; }
+    .btn:hover{ transform:translateY(-2px); box-shadow:0 14px 28px rgba(232,200,116,.3); }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+    .btn-outline{ background:transparent; border:1px solid rgba(255,255,255,.3); color:var(--ivory); }
+    .msg{ margin-top:16px; font-size:.85rem; min-height:20px; }
+    .msg.error{ color:#f28b82; }
+    .msg.success{ color:#a8e6b0; }
+    .foot-note{ margin-top:26px; font-size:.76rem; color:#8f83a3; }
+
+    /* ---- dashboard ---- */
+    #dash{ display:none; max-width:1000px; margin:0 auto; }
+    .dash-header{ display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 28px; margin-bottom:28px; flex-wrap:wrap; }
+    .dash-header .brand{ display:flex; align-items:center; gap:14px; }
+    .dash-header .brand img{ width:44px; height:44px; border-radius:50%; box-shadow:0 0 0 2px rgba(232,200,116,.6); }
+    .dash-header h2{ font-size:1.1rem; }
+    .btn-sm{ padding:10px 20px; font-size:.78rem; width:auto; }
+
+    .tabs{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+    .tab{ padding:10px 18px; border-radius:999px; font-size:.82rem; font-weight:600; cursor:pointer; border:1px solid rgba(255,255,255,.15); color:var(--muted); background:rgba(255,255,255,.03); transition:all .2s ease; }
+    .tab.active{ background:linear-gradient(135deg,var(--gold),var(--gold-dk)); color:#2a1a12; border-color:transparent; }
+
+    .panel{ padding:28px; margin-bottom:24px; }
+    .panel h3{ font-family:'Manrope',sans-serif; font-weight:700; font-size:1rem; margin-bottom:18px; }
+    .upload-row{ display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; }
+    .upload-row .field{ margin-bottom:0; flex:1; min-width:200px; }
+    .upload-row .btn{ width:auto; }
+
+    .photo-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:16px; }
+    .photo-tile{ position:relative; border-radius:14px; overflow:hidden; aspect-ratio:3/4; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); }
+    .photo-tile img{ width:100%; height:100%; object-fit:cover; }
+    .photo-tile .del-btn{ position:absolute; top:6px; right:6px; width:28px; height:28px; border-radius:50%; background:rgba(0,0,0,.55); color:#fff; border:none; cursor:pointer; font-size:.85rem; display:flex; align-items:center; justify-content:center; }
+    .photo-tile .del-btn:hover{ background:#c0392b; }
+    .empty-note{ color:var(--muted); font-size:.88rem; text-align:center; padding:20px; }
   </style>
 </head>
 <body>
-  <!-- Netlify Identity widget: powers the login screen -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- LOGIN GATE -->
+  <div id="gate">
+    <div class="card glass">
+      <div class="logo-badge"><img src="/images/brand/logo.png" alt="Aarti Fashion Palace"></div>
+      <div class="eyebrow">Staff Access Only</div>
+      <h1>Photo Manager</h1>
+      <p>Enter the staff password to add or update photos on the website.</p>
+      <div class="field">
+        <label for="pwInput">Password</label>
+        <input type="password" id="pwInput" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn" id="loginBtn">Login →</button>
+      <div class="msg" id="loginMsg"></div>
+      <div class="foot-note">Aarti Fashion Palace · Khokhra, Ahmedabad</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dash">
+    <div class="dash-header glass">
+      <div class="brand">
+        <img src="/images/brand/logo.png" alt="Aarti Fashion Palace">
+        <h2>Photo Manager</h2>
+      </div>
+      <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="panel glass">
+      <h3>Add a New Photo</h3>
+      <div class="upload-row">
+        <div class="field">
+          <label>Choose Photo</label>
+          <input type="file" id="fileInput" accept="image/*">
+        </div>
+        <div class="field">
+          <label>Caption (optional)</label>
+          <input type="text" id="captionInput" placeholder="e.g. Festive Frock">
+        </div>
+        <button class="btn" id="uploadBtn">Upload</button>
+      </div>
+      <div class="msg" id="uploadMsg"></div>
+    </div>
+
+    <div class="panel glass">
+      <h3 id="galleryTitle">Current Photos</h3>
+      <div class="photo-grid" id="photoGrid"></div>
+    </div>
+  </div>
+
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
+    const CATEGORIES = [
+      { id: 'gallery', label: 'Store Gallery' },
+      { id: 'school-uniform', label: 'School Uniform' },
+      { id: 'festive', label: 'Festive' },
+      { id: 'ethnic', label: 'Ethnic Wear' },
+      { id: 'casual', label: 'Kids Wear' },
+      { id: 'mens', label: "Men's Wear" },
+      { id: 'womens', label: "Women's Wear" },
+    ];
+
+    // ⚠️ SET THIS to your real GitHub "username/repo-name" before going live
+    const GITHUB_REPO = "NiravJoshi1112/Aarti-Fashion-Palace";
+
+    let staffPassword = '';
+    let activeCategory = CATEGORIES[0].id;
+
+    const gate = document.getElementById('gate');
+    const dash = document.getElementById('dash');
+    const loginMsg = document.getElementById('loginMsg');
+    const uploadMsg = document.getElementById('uploadMsg');
+    const tabsEl = document.getElementById('tabs');
+    const photoGrid = document.getElementById('photoGrid');
+    const galleryTitle = document.getElementById('galleryTitle');
+
+    // ---- Build category tabs ----
+    CATEGORIES.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'tab' + (cat.id === activeCategory ? ' active' : '');
+      btn.textContent = cat.label;
+      btn.dataset.cat = cat.id;
+      btn.addEventListener('click', () => {
+        activeCategory = cat.id;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        loadPhotos();
+      });
+      tabsEl.appendChild(btn);
+    });
+
+    // ---- Login ----
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const val = document.getElementById('pwInput').value;
+      if (!val) { loginMsg.textContent = 'Enter the password.'; loginMsg.className = 'msg error'; return; }
+      staffPassword = val;
+      gate.style.display = 'none';
+      dash.style.display = 'block';
+      loadPhotos();
+    });
+    document.getElementById('pwInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      staffPassword = '';
+      dash.style.display = 'none';
+      gate.style.display = 'flex';
+      document.getElementById('pwInput').value = '';
+    });
+
+    // ---- Load & render current photos for active category ----
+    async function loadPhotos() {
+      const cat = CATEGORIES.find(c => c.id === activeCategory);
+      galleryTitle.textContent = `Current Photos — ${cat.label}`;
+      photoGrid.innerHTML = '<div class="empty-note">Loading…</div>';
+      try {
+        const res = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/content/${activeCategory}.json?t=${Date.now()}`);
+        const data = await res.json();
+        const photos = data.photos || [];
+        if (photos.length === 0) {
+          photoGrid.innerHTML = '<div class="empty-note">No photos yet in this category.</div>';
+          return;
         }
+        photoGrid.innerHTML = '';
+        photos.forEach(p => {
+          const tile = document.createElement('div');
+          tile.className = 'photo-tile';
+          tile.innerHTML = `<img src="${p.image}" alt="${p.caption || ''}"><button class="del-btn" title="Delete">✕</button>`;
+          tile.querySelector('.del-btn').addEventListener('click', () => deletePhoto(p.image));
+          photoGrid.appendChild(tile);
+        });
+      } catch (err) {
+        photoGrid.innerHTML = '<div class="empty-note">Could not load photos. Check GITHUB_REPO is set correctly in admin/index.html.</div>';
+      }
+    }
+
+    // ---- Upload ----
+    document.getElementById('uploadBtn').addEventListener('click', async () => {
+      const fileInput = document.getElementById('fileInput');
+      const caption = document.getElementById('captionInput').value;
+      const file = fileInput.files[0];
+      if (!file) { showMsg(uploadMsg, 'Choose a photo first.', 'error'); return; }
+
+      const btn = document.getElementById('uploadBtn');
+      btn.disabled = true;
+      showMsg(uploadMsg, 'Uploading…', '');
+
+      try {
+        const resizedBase64 = await resizeImage(file, 1400, 0.85);
+        const res = await fetch('/.netlify/functions/upload-photo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password: staffPassword,
+            category: activeCategory,
+            imageBase64: resizedBase64,
+            caption,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Upload failed');
+        showMsg(uploadMsg, 'Photo added! It will appear on the site within a minute.', 'success');
+        fileInput.value = '';
+        document.getElementById('captionInput').value = '';
+        setTimeout(loadPhotos, 1500);
+      } catch (err) {
+        showMsg(uploadMsg, err.message === 'Incorrect password' ? 'Wrong password — please log out and try again.' : 'Something went wrong: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // ---- Delete ----
+    async function deletePhoto(imagePath) {
+      if (!confirm('Remove this photo from the website?')) return;
+      try {
+        const res = await fetch('/.netlify/functions/delete-photo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: staffPassword, category: activeCategory, imagePath }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Delete failed');
+        loadPhotos();
+      } catch (err) {
+        alert('Could not delete: ' + err.message);
+      }
+    }
+
+    // ---- Helpers ----
+    function showMsg(el, text, cls) {
+      el.textContent = text;
+      el.className = 'msg' + (cls ? ' ' + cls : '');
+    }
+
+    function resizeImage(file, maxWidth, quality) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = e => { img.src = e.target.result; };
+        reader.onerror = reject;
+        img.onload = () => {
+          const scale = Math.min(1, maxWidth / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = reject;
+        reader.readAsDataURL(file);
       });
     }
   </script>
-  <!-- Decap CMS (the actual upload/manage interface) -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
