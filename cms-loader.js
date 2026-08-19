@@ -3,12 +3,13 @@
 
   HOW IT WORKS
   ------------
-  The admin panel (/admin) saves each uploaded photo as a small JSON file inside
-  content/<category>/ in your GitHub repo, e.g. content/mens/photo-abc123.json:
-    { "image": "/images/mens/photo-abc123.jpg", "caption": "Men's Kurta" }
+  The admin panel (/admin) saves each category's photo list as ONE file:
+    content/gallery.json, content/mens.json, etc.
+  Each file looks like:
+    { "photos": [ { "image": "/images/mens/mens-1.jpg", "caption": "Men's Kurta" }, ... ] }
 
-  This script fetches the list of those JSON files straight from GitHub each time
-  someone visits the page, and builds the photo grid from whatever it finds.
+  This script fetches that file straight from GitHub each time someone
+  visits the page, and builds the photo grid from whatever's listed.
   No rebuild, no redeploy needed — uploads appear within a minute or two.
 
   SETUP REQUIRED
@@ -18,7 +19,7 @@
   page falls back to the photos already baked into the HTML.
 */
 
-const GITHUB_REPO = "REPLACE-WITH-YOUR-USERNAME/REPLACE-WITH-YOUR-REPO-NAME";
+const GITHUB_REPO = "NiravJoshi1112/Aarti-Fashion-Palace";
 const CACHE_MINUTES = 10;
 
 async function fetchCategory(category) {
@@ -31,17 +32,11 @@ async function fetchCategory(category) {
     } catch (e) {}
   }
 
-  const listUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/content/${category}`;
-  const res = await fetch(listUrl);
-  if (!res.ok) throw new Error(`Could not list ${category}`);
-  const files = await res.json();
-
-  const items = await Promise.all(
-    files.filter(f => f.name.endsWith('.json')).map(async f => {
-      const r = await fetch(f.download_url);
-      return r.json();
-    })
-  );
+  const url = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/content/${category}.json?t=${Date.now()}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Could not load ${category}.json`);
+  const data = await res.json();
+  const items = data.photos || [];
 
   sessionStorage.setItem(cacheKey, JSON.stringify({ time: Date.now(), items }));
   return items;
