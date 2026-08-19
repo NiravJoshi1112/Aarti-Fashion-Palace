@@ -1,0 +1,20 @@
+{
+  "photos": [
+    {
+      "image": "/images/mens/mens-1.jpg",
+      "caption": "Men's Kurta"
+    },
+    {
+      "image": "/images/mens/mens-2.jpg",
+      "caption": "Men's Shirt"
+    },
+    {
+      "image": "/images/mens/mens-3.jpg",
+      "caption": "Nehru Jacket"
+    },
+    {
+      "image": "/images/mens/mens-4.jpg",
+      "caption": "Shirt & Trouser"
+    }
+  ]
+}

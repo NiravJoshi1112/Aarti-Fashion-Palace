@@ -1,0 +1,32 @@
+{
+  "photos": [
+    {
+      "image": "/images/gallery/33517.jpg",
+      "caption": "In-store inventory"
+    },
+    {
+      "image": "/images/gallery/33533.jpg",
+      "caption": "Store display case"
+    },
+    {
+      "image": "/images/gallery/33536.jpg",
+      "caption": "Storefront view"
+    },
+    {
+      "image": "/images/gallery/33541.jpg",
+      "caption": "Storefront"
+    },
+    {
+      "image": "/images/gallery/33544.jpg",
+      "caption": "Display case"
+    },
+    {
+      "image": "/images/gallery/33550.jpg",
+      "caption": "Display case"
+    },
+    {
+      "image": "/images/gallery/33553.jpg",
+      "caption": "Store interior"
+    }
+  ]
+}

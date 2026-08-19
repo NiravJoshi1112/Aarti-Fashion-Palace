@@ -1,0 +1,20 @@
+{
+  "photos": [
+    {
+      "image": "/images/womens/womens-1.jpg",
+      "caption": "Women's Kurti"
+    },
+    {
+      "image": "/images/womens/womens-2.jpg",
+      "caption": "Saree Drape"
+    },
+    {
+      "image": "/images/womens/womens-3.jpg",
+      "caption": "Lehenga Set"
+    },
+    {
+      "image": "/images/womens/womens-4.jpg",
+      "caption": "Anarkali Gown"
+    }
+  ]
+}
