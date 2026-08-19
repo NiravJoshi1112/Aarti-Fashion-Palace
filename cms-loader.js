@@ -49,12 +49,23 @@ function renderGrid(container, items) {
     const tile = document.createElement('div');
     tile.className = 'photo-tile';
     const img = document.createElement('img');
-    img.src = item.image;
+    img.src = resolveImageUrl(item.image);
     img.alt = item.caption || '';
     img.loading = 'lazy';
     tile.appendChild(img);
     container.appendChild(tile);
   });
+}
+
+// Photos are served directly from GitHub (not Netlify) so they show up instantly
+// regardless of whether a Netlify deploy has run. Old entries stored a relative
+// path like "/images/gallery/33517.jpg" — this turns those into a full GitHub URL
+// too, so every photo works the same way without needing to edit old data.
+function resolveImageUrl(path) {
+  if (!path) return path;
+  if (path.startsWith('http')) return path; // already a full URL (new uploads)
+  const rel = path.startsWith('/') ? path.slice(1) : path;
+  return `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${rel}`;
 }
 
 async function initCmsGrids() {

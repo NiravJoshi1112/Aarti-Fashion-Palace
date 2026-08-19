@@ -84,8 +84,9 @@ exports.handler = async (event) => {
     const currentContent = JSON.parse(Buffer.from(getData.content, 'base64').toString('utf-8'));
     const photos = currentContent.photos || [];
 
-    // 3. Append the new photo entry
-    photos.push({ image: `/${imagePath}`, caption: caption || '' });
+    // 3. Append the new photo entry (served directly from GitHub, independent of Netlify deploys)
+    const imageUrl = `https://raw.githubusercontent.com/${GH_REPO}/${GH_BRANCH}/${imagePath}`;
+    photos.push({ image: imageUrl, caption: caption || '' });
     const updatedContent = { photos };
     const updatedBase64 = Buffer.from(JSON.stringify(updatedContent, null, 2)).toString('base64');
 

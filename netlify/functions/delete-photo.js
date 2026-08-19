@@ -69,7 +69,11 @@ exports.handler = async (event) => {
 
     // 3. Try to also delete the actual image file (best-effort, don't fail the whole request if this part fails)
     try {
-      const imgFilePath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+      // imagePath is now a full raw.githubusercontent.com URL — extract just the repo-relative file path
+      const prefix = `https://raw.githubusercontent.com/${GH_REPO}/${GH_BRANCH}/`;
+      const imgFilePath = imagePath.startsWith(prefix)
+        ? imagePath.slice(prefix.length)
+        : (imagePath.startsWith('/') ? imagePath.slice(1) : imagePath);
       const imgGetRes = await fetch(`${API}/contents/${imgFilePath}?ref=${GH_BRANCH}`, { headers });
       if (imgGetRes.ok) {
         const imgData = await imgGetRes.json();
