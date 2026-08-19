@@ -20,7 +20,7 @@
 */
 
 const GITHUB_REPO = "NiravJoshi1112/Aarti-Fashion-Palace";
-const CACHE_MINUTES = 10;
+const CACHE_MINUTES = 1;
 
 async function fetchCategory(category) {
   const cacheKey = `cms-cache-${category}`;
